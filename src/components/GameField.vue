@@ -11,7 +11,7 @@ const gameState = ref<{
     ["", "", ""],
     ["", "", ""],
   ],
-  isRunning: false,
+  isRunning: true,
   currentPlayerO: false,
 });
 
@@ -22,18 +22,32 @@ const handleClick = (i: number, j: number) => {
   if (!gameState.value.currentPlayerO) {
     gameState.value.field[i][j] = "X";
   }
+  endTurn();
+};
+
+const endTurn = () => {
+  gameState.value.isRunning = false;
   gameState.value.currentPlayerO = !gameState.value.currentPlayerO;
+  startTurn();
+};
+
+const startTurn = () => {
+  gameState.value.isRunning = true;
 };
 </script>
 
 <template>
   GAMEFIELD
+  {{ gameState }}
   <table>
     <tbody>
       <tr v-for="(row, i) in gameState.field">
         <td v-for="(column, j) in row">
           {{ i + ", " + j }}
-          <button type="button" @click="() => handleClick(i, j)">
+          <button
+            type="button"
+            @click="() => handleClick(i, j)"
+            :disabled="!gameState.isRunning || column !== ''">
             {{ column }}
           </button>
         </td>
