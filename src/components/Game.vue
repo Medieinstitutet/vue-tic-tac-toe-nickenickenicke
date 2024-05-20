@@ -3,16 +3,12 @@ import { ref } from "vue";
 import { Player } from "../models/Player";
 import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
+import GameField from "./GameField.vue";
 
 const state = ref<{
   players: Player[];
-  game: {
-    isRunning: boolean;
-    currentPlayerO: boolean;
-  };
 }>({
   players: [new Player(), new Player()],
-  game: { isRunning: false, currentPlayerO: false },
 });
 
 const playerNameChange = (name: string, i: number) => {
@@ -27,6 +23,7 @@ const playerNameChange = (name: string, i: number) => {
   </ul>
   <NameEntry :players="state.players" @name-change="playerNameChange" />
   <Scoreboard :players="state.players" />
+  <GameField />
 </template>
 
 <style scoped></style>
