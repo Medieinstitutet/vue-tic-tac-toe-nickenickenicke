@@ -2,27 +2,23 @@
 import { ref } from "vue";
 
 const gameState = ref<{
-  field: [string[], string[], string[]];
+  field: string[];
   isRunning: boolean;
   currentPlayerO: boolean;
   currentTurn: number;
 }>({
-  field: [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
-  ],
+  field: ["", "", "", "", "", "", "", "", ""],
   isRunning: true,
   currentPlayerO: false,
   currentTurn: 0,
 });
 
-const handleClick = (i: number, j: number) => {
+const handleClick = (i: number) => {
   if (gameState.value.currentPlayerO) {
-    gameState.value.field[i][j] = "O";
+    gameState.value.field[i] = "O";
   }
   if (!gameState.value.currentPlayerO) {
-    gameState.value.field[i][j] = "X";
+    gameState.value.field[i] = "X";
   }
   endTurn();
 };
@@ -41,14 +37,35 @@ const startTurn = () => {
 
 const checkWin = () => {
   if (gameState.value.currentTurn < 4) return;
-  const currentPlayer = gameState.value.currentPlayerO ? "O" : "X";
+  const currentPlayer: string = gameState.value.currentPlayerO ? "O" : "X";
 
   if (
-    gameState.value.field[0][0] &&
-    gameState.value.field[0][1] &&
-    gameState.value.field[0][2] === currentPlayer
+    (gameState.value.field[0] === currentPlayer &&
+      gameState.value.field[1] === currentPlayer &&
+      gameState.value.field[2] === currentPlayer) ||
+    (gameState.value.field[3] === currentPlayer &&
+      gameState.value.field[4] === currentPlayer &&
+      gameState.value.field[5] === currentPlayer) ||
+    (gameState.value.field[6] === currentPlayer &&
+      gameState.value.field[7] === currentPlayer &&
+      gameState.value.field[8] === currentPlayer) ||
+    (gameState.value.field[0] === currentPlayer &&
+      gameState.value.field[3] === currentPlayer &&
+      gameState.value.field[6] === currentPlayer) ||
+    (gameState.value.field[1] === currentPlayer &&
+      gameState.value.field[4] === currentPlayer &&
+      gameState.value.field[7] === currentPlayer) ||
+    (gameState.value.field[2] === currentPlayer &&
+      gameState.value.field[5] === currentPlayer &&
+      gameState.value.field[8] === currentPlayer) ||
+    (gameState.value.field[0] === currentPlayer &&
+      gameState.value.field[4] === currentPlayer &&
+      gameState.value.field[8] === currentPlayer) ||
+    (gameState.value.field[2] === currentPlayer &&
+      gameState.value.field[4] === currentPlayer &&
+      gameState.value.field[6] === currentPlayer)
   ) {
-    triggerWin();
+    return triggerWin();
   }
 };
 
@@ -60,26 +77,27 @@ const triggerWin = () => {
 <template>
   GAMEFIELD
   {{ gameState }}
-  <table>
-    <tbody>
-      <tr v-for="(row, i) in gameState.field">
-        <td v-for="(column, j) in row">
-          {{ i + ", " + j }}
-          <button
-            type="button"
-            @click="() => handleClick(i, j)"
-            :disabled="!gameState.isRunning || column !== ''">
-            {{ column }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="gamefield">
+    <button
+      class="gamefield__btn"
+      v-for="(column, i) in gameState.field"
+      type="button"
+      @click="() => handleClick(i)"
+      :disabled="!gameState.isRunning || column !== ''">
+      {{ i + ", " }} {{ column }}
+    </button>
+  </div>
 </template>
 
 <style scoped>
-button {
-  min-width: 3rem;
+.gamefield {
+  display: flex;
+  flex-wrap: wrap;
+  width: 310px;
+}
+
+.gamefield__btn {
   min-height: 3rem;
+  width: 100px;
 }
 </style>
