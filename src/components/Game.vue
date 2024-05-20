@@ -158,9 +158,11 @@ const displayResult = (winner: string) => {
   navigationState.value.showGameResult = true;
   navigationState.value.showCurrentPlayer = false;
   if (winner === "X") {
-    messagesState.value.resultMessage = state.value.players[1].name + " wins!";
+    messagesState.value.resultMessage =
+      state.value.players[1].name + " X wins!";
   } else if (winner === "O") {
-    messagesState.value.resultMessage = state.value.players[0].name + " wins!";
+    messagesState.value.resultMessage =
+      state.value.players[0].name + " O wins!";
   } else {
     messagesState.value.resultMessage = "Draw!";
   }
@@ -170,10 +172,12 @@ const displayCurrentPlayer = () => {
   navigationState.value.showCurrentPlayer = true;
   let currentPlayerName: string = "";
   if (state.value.game.currentPlayerO) {
-    currentPlayerName = state.value.players[0].name;
+    currentPlayerName =
+      state.value.players[0].name === "" ? "O" : state.value.players[0].name;
   }
   if (!state.value.game.currentPlayerO) {
-    currentPlayerName = state.value.players[1].name;
+    currentPlayerName =
+      state.value.players[1].name === "" ? "X" : state.value.players[1].name;
   }
   messagesState.value.currentPlayerMessage =
     "It is your turn, " + currentPlayerName + "!";
