@@ -5,6 +5,7 @@ import { IState } from "../models/IState";
 import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
+import Navigation from "./Navigation.vue";
 
 const state = ref<IState>({
   players: [new Player(), new Player()],
@@ -116,10 +117,6 @@ const startNewRound = () => {
 </script>
 
 <template>
-  Player names in state
-  <ul>
-    <li v-for="(player, i) in state.players">{{ i + ". " + player.name }}</li>
-  </ul>
   <NameEntry :players="state.players" @name-change="playerNameChange" />
   <Scoreboard :players="state.players" />
   <GameField
@@ -129,9 +126,9 @@ const startNewRound = () => {
         fieldClick(i);
       }
     " />
-  <button @click.prevent="startNewRound" :disabled="state.game.isRunning">
-    AGAIN!
-  </button>
+  <Navigation
+    :game-state="state.game.isRunning"
+    @handle-new-game="startNewRound" />
 </template>
 
 <style scoped></style>
