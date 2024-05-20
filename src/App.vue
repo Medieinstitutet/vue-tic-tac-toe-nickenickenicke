@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Game from "./components/Game.vue";
+</script>
 
-<template></template>
+<template><Game /></template>
 
 <style scoped></style>
