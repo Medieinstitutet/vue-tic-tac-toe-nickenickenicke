@@ -6,6 +6,7 @@ import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
 import Navigation from "./Navigation.vue";
+import ClearStatistics from "./ClearStatistics.vue";
 
 const state = ref<IState>({
   players: [new Player(), new Player()],
@@ -20,9 +21,11 @@ const state = ref<IState>({
 const navigationState = ref<{
   showNameInput: boolean;
   showScoreboard: boolean;
+  showClearStatistics: boolean;
 }>({
   showNameInput: false,
   showScoreboard: false,
+  showClearStatistics: false,
 });
 
 const LOCAL_STORAGE_KEY: string = "ticTacStorage";
@@ -122,6 +125,13 @@ const startNewRound = () => {
   state.value.game.field = ["", "", "", "", "", "", "", "", ""];
   startTurn();
 };
+
+const clearStatistics = () => {
+  state.value.players[0].score = 0;
+  state.value.players[1].score = 0;
+  navigationState.value.showClearStatistics = false;
+  saveState();
+};
 </script>
 
 <template>
@@ -144,7 +154,20 @@ const startNewRound = () => {
       () => {
         navigationState.showNameInput = true;
       }
+    "
+    @handle-show-clear-statistics="
+      () => {
+        navigationState.showClearStatistics = true;
+      }
     " />
+  <ClearStatistics
+    v-if="navigationState.showClearStatistics"
+    @handle-clear-statistics-toggle="
+      () => {
+        navigationState.showClearStatistics = false;
+      }
+    "
+    @handle-clear-statistics="clearStatistics" />
 </template>
 
 <style scoped></style>

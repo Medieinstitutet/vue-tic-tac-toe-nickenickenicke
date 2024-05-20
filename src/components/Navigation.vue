@@ -6,6 +6,7 @@ defineProps<{
 defineEmits<{
   (e: "handleNewGame"): void;
   (e: "handleShowNames"): void;
+  (e: "handleShowClearStatistics"): void;
 }>();
 </script>
 
@@ -16,7 +17,9 @@ defineEmits<{
     </button>
     <button>Scoreboard</button>
     <button @click.prevent="$emit('handleShowNames')">Change names</button>
-    <button>Clear statistics</button>
+    <button @click.prevent="$emit('handleShowClearStatistics')">
+      Clear statistics
+    </button>
   </nav>
 </template>
 
