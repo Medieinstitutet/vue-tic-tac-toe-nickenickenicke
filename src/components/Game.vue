@@ -4,16 +4,9 @@ import { Player } from "../models/Player";
 import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
+import { IState } from "../models/IState";
 
-const state = ref<{
-  players: Player[];
-  game: {
-    field: string[];
-    isRunning: boolean;
-    currentPlayerO: boolean;
-    currentTurn: number;
-  };
-}>({
+const state = ref<IState>({
   players: [new Player(), new Player()],
   game: {
     field: ["", "", "", "", "", "", "", "", ""],
@@ -22,9 +15,15 @@ const state = ref<{
     currentTurn: 0,
   },
 });
+const LOCAL_STORAGE_KEY: string = "ticTacStorage";
+
+if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+  state.value = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "");
+}
 
 const playerNameChange = (name: string, i: number) => {
   state.value.players[i].name = name;
+  saveState();
 };
 
 const fieldClick = (i: number) => {
@@ -41,6 +40,7 @@ const startTurn = () => {
   state.value.game.isRunning = true;
   state.value.game.currentPlayerO = !state.value.game.currentPlayerO;
   state.value.game.currentTurn += 1;
+  saveState();
 };
 
 const endTurn = () => {
@@ -87,7 +87,16 @@ const checkWin = () => {
 
 const triggerWin = () => {
   state.value.game.isRunning = false;
+
+  if (state.value.game.currentPlayerO === true) state.value.players[0].score++;
+  if (state.value.game.currentPlayerO === false) state.value.players[1].score++;
+
   console.log("WIN!");
+  saveState();
+};
+
+const saveState = () => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.value));
 };
 </script>
 

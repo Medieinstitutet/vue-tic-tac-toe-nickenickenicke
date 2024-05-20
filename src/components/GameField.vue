@@ -15,7 +15,6 @@ defineEmits<{
 
 <template>
   GAMEFIELD
-  {{ gameState }}
   <div class="gamefield">
     <button
       class="gamefield__btn"
@@ -23,7 +22,7 @@ defineEmits<{
       type="button"
       @click="() => $emit('fieldClick', i)"
       :disabled="!gameState.isRunning || column !== ''">
-      {{ i + ", " }} {{ column }}
+      {{ column }}
     </button>
   </div>
 </template>
