@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { Player } from "../models/Player";
 import { IState } from "../models/IState";
+
 import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
@@ -23,14 +24,22 @@ const navigationState = ref<{
   showScoreboard: boolean;
   showClearStatistics: boolean;
   showGameResult: boolean;
+  showCurrentPlayer: boolean;
 }>({
   showNameInput: false,
   showScoreboard: false,
   showClearStatistics: false,
   showGameResult: false,
+  showCurrentPlayer: true,
 });
 
-const resultMessage = ref<string>("");
+const messagesState = ref<{
+  resultMessage: string;
+  currentPlayerMessage: string;
+}>({
+  resultMessage: "",
+  currentPlayerMessage: "",
+});
 
 const LOCAL_STORAGE_KEY: string = "ticTacStorage";
 
@@ -54,16 +63,21 @@ const playerNameChange = (name: string, i: number) => {
   saveState();
 };
 
+const startNewRound = () => {
+  state.value.game.currentPlayerO = Math.random() < 0.5;
+  state.value.game.currentTurn = 0;
+  state.value.game.field = ["", "", "", "", "", "", "", "", ""];
+  navigationState.value.showCurrentPlayer = true;
+  navigationState.value.showGameResult = false;
+  startTurn();
+};
+
 const startTurn = () => {
   state.value.game.isRunning = true;
   state.value.game.currentPlayerO = !state.value.game.currentPlayerO;
   state.value.game.currentTurn += 1;
+  displayCurrentPlayer();
   saveState();
-};
-
-const endTurn = () => {
-  state.value.game.isRunning = false;
-  checkWin();
 };
 
 const fieldClick = (i: number) => {
@@ -74,6 +88,11 @@ const fieldClick = (i: number) => {
     state.value.game.field[i] = "X";
   }
   endTurn();
+};
+
+const endTurn = () => {
+  state.value.game.isRunning = false;
+  checkWin();
 };
 
 const checkWin = () => {
@@ -137,27 +156,34 @@ const triggerDraw = () => {
 
 const displayResult = (winner: string) => {
   navigationState.value.showGameResult = true;
+  navigationState.value.showCurrentPlayer = false;
   if (winner === "X") {
-    resultMessage.value = state.value.players[1].name + " wins!";
+    messagesState.value.resultMessage = state.value.players[1].name + " wins!";
   } else if (winner === "O") {
-    resultMessage.value = state.value.players[0].name + " wins!";
+    messagesState.value.resultMessage = state.value.players[0].name + " wins!";
   } else {
-    resultMessage.value = "Draw!";
+    messagesState.value.resultMessage = "Draw!";
   }
 };
 
-const startNewRound = () => {
-  state.value.game.currentPlayerO = Math.random() < 0.5;
-  state.value.game.currentTurn = 0;
-  state.value.game.field = ["", "", "", "", "", "", "", "", ""];
-  startTurn();
+const displayCurrentPlayer = () => {
+  navigationState.value.showCurrentPlayer = true;
+  let currentPlayerName: string = "";
+  if (state.value.game.currentPlayerO) {
+    currentPlayerName = state.value.players[0].name;
+  }
+  if (!state.value.game.currentPlayerO) {
+    currentPlayerName = state.value.players[1].name;
+  }
+  messagesState.value.currentPlayerMessage =
+    "It is your turn, " + currentPlayerName + "!";
 };
 
 const clearStatistics = () => {
-  state.value.players[0].score = 0;
-  state.value.players[1].score = 0;
+  state.value.players = [new Player(), new Player()];
   navigationState.value.showClearStatistics = false;
-  saveState();
+  navigationState.value.showNameInput = true;
+  startNewRound();
 };
 </script>
 
@@ -167,7 +193,12 @@ const clearStatistics = () => {
     :players="state.players"
     @name-change="playerNameChange" />
   <Scoreboard v-if="navigationState.showScoreboard" :players="state.players" />
-  <section v-if="navigationState.showGameResult">{{ resultMessage }}</section>
+  <section v-if="navigationState.showGameResult">
+    {{ messagesState.resultMessage }}
+  </section>
+  <section v-if="navigationState.showCurrentPlayer">
+    {{ messagesState.currentPlayerMessage }}
+  </section>
   <GameField
     :game-state="state.game"
     @field-click="

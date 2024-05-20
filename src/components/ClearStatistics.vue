@@ -7,7 +7,10 @@ defineEmits<{
 
 <template>
   <aside class="modal">
-    <p>Are you shure you want to clear the statistics?</p>
+    <p>
+      Are you sure you want to clear the statistics? This will start a new
+      round.
+    </p>
     <button @click.prevent="$emit('handleClearStatistics')" type="button">
       Yes
     </button>
