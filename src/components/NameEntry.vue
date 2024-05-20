@@ -21,7 +21,7 @@ const handleNameChange = (name: string, i: number) => {
     <NameInput
       v-for="(player, i) in players"
       :i="i"
-      @name-submit="handleNameChange" />
+      @name-submit="(name) => handleNameChange(name, i)" />
   </section>
 </template>
 

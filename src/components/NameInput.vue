@@ -12,11 +12,11 @@ if (props.i === 1) playerSymbol = "X";
 const inputName = ref("");
 
 const emit = defineEmits<{
-  (e: "nameSubmit", name: string, i: number): void;
+  (e: "nameSubmit", name: string): void;
 }>();
 
 const handleSubmit = () => {
-  emit("nameSubmit", inputName.value, props.i);
+  emit("nameSubmit", inputName.value);
   inputName.value = "";
 };
 </script>
