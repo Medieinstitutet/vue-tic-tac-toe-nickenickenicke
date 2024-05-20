@@ -14,7 +14,6 @@ defineEmits<{
 </script>
 
 <template>
-  GAMEFIELD
   <div class="gamefield">
     <button
       class="gamefield__btn"

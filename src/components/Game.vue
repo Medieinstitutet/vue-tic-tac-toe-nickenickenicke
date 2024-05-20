@@ -34,6 +34,10 @@ if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
   state.value = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "");
 }
 
+if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
+  navigationState.value.showNameInput = true;
+}
+
 const saveState = () => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.value));
 };
@@ -139,7 +143,7 @@ const clearStatistics = () => {
     v-if="navigationState.showNameInput"
     :players="state.players"
     @name-change="playerNameChange" />
-  <Scoreboard :players="state.players" />
+  <Scoreboard v-if="navigationState.showScoreboard" :players="state.players" />
   <GameField
     :game-state="state.game"
     @field-click="
@@ -152,12 +156,18 @@ const clearStatistics = () => {
     @handle-new-game="startNewRound"
     @handle-show-names="
       () => {
-        navigationState.showNameInput = true;
+        navigationState.showNameInput = !navigationState.showNameInput;
       }
     "
     @handle-show-clear-statistics="
       () => {
-        navigationState.showClearStatistics = true;
+        navigationState.showClearStatistics =
+          !navigationState.showClearStatistics;
+      }
+    "
+    @handle-show-scoreboard="
+      () => {
+        navigationState.showScoreboard = !navigationState.showScoreboard;
       }
     " />
   <ClearStatistics

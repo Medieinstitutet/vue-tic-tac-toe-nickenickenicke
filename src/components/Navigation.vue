@@ -5,6 +5,7 @@ defineProps<{
 
 defineEmits<{
   (e: "handleNewGame"): void;
+  (e: "handleShowScoreboard"): void;
   (e: "handleShowNames"): void;
   (e: "handleShowClearStatistics"): void;
 }>();
@@ -15,7 +16,7 @@ defineEmits<{
     <button @click.prevent="$emit('handleNewGame')" :disabled="gameState">
       New game
     </button>
-    <button>Scoreboard</button>
+    <button @click.prevent="$emit('handleShowScoreboard')">Scoreboard</button>
     <button @click.prevent="$emit('handleShowNames')">Change names</button>
     <button @click.prevent="$emit('handleShowClearStatistics')">
       Clear statistics
