@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Player } from "../models/Player";
 import NameEntry from "./NameEntry.vue";
+import Scoreboard from "./Scoreboard.vue";
 
 const state = ref<{
   players: Player[];
@@ -25,6 +26,7 @@ const playerNameChange = (name: string, i: number) => {
     <li v-for="(player, i) in state.players">{{ i + ". " + player.name }}</li>
   </ul>
   <NameEntry :players="state.players" @name-change="playerNameChange" />
+  <Scoreboard :players="state.players" />
 </template>
 
 <style scoped></style>
