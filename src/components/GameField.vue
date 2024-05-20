@@ -17,11 +17,11 @@ defineEmits<{
   <div class="gamefield">
     <button
       class="gamefield__btn"
-      v-for="(column, i) in gameState.field"
+      v-for="(field, i) in gameState.field"
       type="button"
       @click="() => $emit('fieldClick', i)"
-      :disabled="!gameState.isRunning || column !== ''">
-      {{ column }}
+      :disabled="!gameState.isRunning || field !== ''">
+      {{ field }}
     </button>
   </div>
 </template>
