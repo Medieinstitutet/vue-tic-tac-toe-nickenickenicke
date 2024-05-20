@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { ref } from "vue";
+
+const props = defineProps<{
   gameState: {
     field: string[];
     isRunning: boolean;
@@ -11,6 +13,20 @@ defineProps<{
 defineEmits<{
   (e: "fieldClick", i: number): void;
 }>();
+
+const atMouseOver = (e: Event) => {
+  if (!(e.target as HTMLButtonElement).disabled) {
+    (e.target as HTMLButtonElement).innerHTML = props.gameState.currentPlayerO
+      ? "O"
+      : "X";
+  }
+};
+
+const atMouseLeave = (e: Event) => {
+  if (!(e.target as HTMLButtonElement).disabled) {
+    (e.target as HTMLButtonElement).innerHTML = "";
+  }
+};
 </script>
 
 <template>
@@ -20,6 +36,8 @@ defineEmits<{
       v-for="(field, i) in gameState.field"
       type="button"
       @click="() => $emit('fieldClick', i)"
+      @mouseover="(e) => atMouseOver(e)"
+      @mouseleave="(e) => atMouseLeave(e)"
       :disabled="!gameState.isRunning || field !== ''">
       {{ field }}
     </button>

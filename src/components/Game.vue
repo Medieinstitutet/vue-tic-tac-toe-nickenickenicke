@@ -46,6 +46,8 @@ const LOCAL_STORAGE_KEY: string = "ticTacStorage";
 onMounted(() => {
   if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
     state.value = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "");
+    if (state.value.game.isRunning) displayCurrentPlayer();
+    if (!state.value.game.isRunning) startNewRound();
   }
 
   if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
