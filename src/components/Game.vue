@@ -17,6 +17,14 @@ const state = ref<IState>({
   },
 });
 
+const navigationState = ref<{
+  showNameInput: boolean;
+  showScoreboard: boolean;
+}>({
+  showNameInput: false,
+  showScoreboard: false,
+});
+
 const LOCAL_STORAGE_KEY: string = "ticTacStorage";
 
 if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
@@ -117,7 +125,10 @@ const startNewRound = () => {
 </script>
 
 <template>
-  <NameEntry :players="state.players" @name-change="playerNameChange" />
+  <NameEntry
+    v-if="navigationState.showNameInput"
+    :players="state.players"
+    @name-change="playerNameChange" />
   <Scoreboard :players="state.players" />
   <GameField
     :game-state="state.game"
@@ -128,7 +139,12 @@ const startNewRound = () => {
     " />
   <Navigation
     :game-state="state.game.isRunning"
-    @handle-new-game="startNewRound" />
+    @handle-new-game="startNewRound"
+    @handle-show-names="
+      () => {
+        navigationState.showNameInput = true;
+      }
+    " />
 </template>
 
 <style scoped></style>
