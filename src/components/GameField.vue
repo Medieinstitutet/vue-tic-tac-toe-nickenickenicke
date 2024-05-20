@@ -5,6 +5,7 @@ const gameState = ref<{
   field: [string[], string[], string[]];
   isRunning: boolean;
   currentPlayerO: boolean;
+  currentTurn: number;
 }>({
   field: [
     ["", "", ""],
@@ -13,6 +14,7 @@ const gameState = ref<{
   ],
   isRunning: true,
   currentPlayerO: false,
+  currentTurn: 0,
 });
 
 const handleClick = (i: number, j: number) => {
@@ -27,12 +29,31 @@ const handleClick = (i: number, j: number) => {
 
 const endTurn = () => {
   gameState.value.isRunning = false;
+  checkWin();
   gameState.value.currentPlayerO = !gameState.value.currentPlayerO;
   startTurn();
 };
 
 const startTurn = () => {
+  gameState.value.currentTurn += 1;
   gameState.value.isRunning = true;
+};
+
+const checkWin = () => {
+  if (gameState.value.currentTurn < 4) return;
+  const currentPlayer = gameState.value.currentPlayerO ? "O" : "X";
+
+  if (
+    gameState.value.field[0][0] &&
+    gameState.value.field[0][1] &&
+    gameState.value.field[0][2] === currentPlayer
+  ) {
+    triggerWin();
+  }
+};
+
+const triggerWin = () => {
+  console.log("WIN!");
 };
 </script>
 
