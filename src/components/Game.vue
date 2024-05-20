@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Player } from "../models/Player";
 import { IState } from "../models/IState";
 import NameEntry from "./NameEntry.vue";
@@ -22,21 +22,28 @@ const navigationState = ref<{
   showNameInput: boolean;
   showScoreboard: boolean;
   showClearStatistics: boolean;
+  showGameResult: boolean;
 }>({
   showNameInput: false,
   showScoreboard: false,
   showClearStatistics: false,
+  showGameResult: false,
 });
+
+const resultMessage = ref<string>("");
 
 const LOCAL_STORAGE_KEY: string = "ticTacStorage";
 
-if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
-  state.value = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "");
-}
+onMounted(() => {
+  if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+    state.value = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "");
+  }
 
-if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
-  navigationState.value.showNameInput = true;
-}
+  if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
+    navigationState.value.showNameInput = true;
+    startNewRound();
+  }
+});
 
 const saveState = () => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.value));
@@ -110,17 +117,33 @@ const checkWin = () => {
 const triggerWin = () => {
   state.value.game.isRunning = false;
 
-  if (state.value.game.currentPlayerO === true) state.value.players[0].score++;
-  if (state.value.game.currentPlayerO === false) state.value.players[1].score++;
+  if (state.value.game.currentPlayerO === true) {
+    state.value.players[0].score++;
+    displayResult("O");
+  }
+  if (state.value.game.currentPlayerO === false) {
+    state.value.players[1].score++;
+    displayResult("X");
+  }
 
-  console.log("WIN!");
   saveState();
 };
 
 const triggerDraw = () => {
-  console.log("DRAW!");
+  displayResult("draw");
   state.value.game.isRunning = false;
   saveState();
+};
+
+const displayResult = (winner: string) => {
+  navigationState.value.showGameResult = true;
+  if (winner === "X") {
+    resultMessage.value = state.value.players[1].name + " wins!";
+  } else if (winner === "O") {
+    resultMessage.value = state.value.players[0].name + " wins!";
+  } else {
+    resultMessage.value = "Draw!";
+  }
 };
 
 const startNewRound = () => {
@@ -144,6 +167,7 @@ const clearStatistics = () => {
     :players="state.players"
     @name-change="playerNameChange" />
   <Scoreboard v-if="navigationState.showScoreboard" :players="state.players" />
+  <section v-if="navigationState.showGameResult">{{ resultMessage }}</section>
   <GameField
     :game-state="state.game"
     @field-click="
