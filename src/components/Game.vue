@@ -233,10 +233,10 @@ const clearModal = () => {
     @clear-statistics="clearStatistics"
     @player-name-change="playerNameChange" />
   <article class="gamecontainer">
-    <section v-if="navigationState.showGameResult">
+    <section v-if="navigationState.showGameResult" class="game-message">
       {{ messagesState.resultMessage }}
     </section>
-    <section v-if="navigationState.showCurrentPlayer">
+    <section v-if="navigationState.showCurrentPlayer" class="game-message">
       {{ messagesState.currentPlayerMessage }}
     </section>
     <GameField
@@ -267,11 +267,4 @@ const clearModal = () => {
     " />
 </template>
 
-<style scoped>
-.gamecontainer {
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-</style>
+<style scoped></style>

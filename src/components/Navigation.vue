@@ -13,12 +13,21 @@ defineEmits<{
 
 <template>
   <nav>
-    <button @click.prevent="$emit('handleNewGame')" :disabled="gameState">
+    <button
+      @click.prevent="$emit('handleNewGame')"
+      :disabled="gameState"
+      class="nav__btn">
       New game
     </button>
-    <button @click.prevent="$emit('handleShowScoreboard')">Scoreboard</button>
-    <button @click.prevent="$emit('handleShowNames')">Change names</button>
-    <button @click.prevent="$emit('handleShowClearStatistics')">
+    <button @click.prevent="$emit('handleShowScoreboard')" class="nav__btn">
+      Scoreboard
+    </button>
+    <button @click.prevent="$emit('handleShowNames')" class="nav__btn">
+      Change names
+    </button>
+    <button
+      @click.prevent="$emit('handleShowClearStatistics')"
+      class="nav__btn">
       Clear statistics
     </button>
   </nav>
