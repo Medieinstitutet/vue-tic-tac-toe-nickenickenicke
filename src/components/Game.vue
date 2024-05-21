@@ -3,12 +3,9 @@ import { onMounted, ref } from "vue";
 import { Player } from "../models/Player";
 import { IState } from "../models/IState";
 
-import NameEntry from "./NameEntry.vue";
-import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
 import Navigation from "./Navigation.vue";
 import Modal from "./Modal.vue";
-import ClearStatistics from "./ClearStatistics.vue";
 
 const state = ref<IState>({
   players: [new Player(), new Player()],
