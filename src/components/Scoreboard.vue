@@ -7,9 +7,9 @@ defineProps<{
 </script>
 
 <template>
-  <section>
-    SCOREBOARD
-    <table>
+  <h3 class="modal__heading">Scoreboard</h3>
+  <section class="modal__content modal__content--scoreboard">
+    <table class="scoreboard">
       <thead>
         <tr>
           <td>Symbol</td>

@@ -6,15 +6,23 @@ defineEmits<{
 </script>
 
 <template>
-  <section>
-    <p>
-      Are you sure you want to clear the statistics? This will start a new
-      round.
+  <h3 class="modal__heading">Clear Statistics</h3>
+
+  <section class="modal__content modal__content--scoreboard">
+    <p class="modal__p">
+      Are you sure you want to clear the statistics? This will reset everything
+      and start a new round.
     </p>
-    <button @click.prevent="$emit('handleClearStatistics')" type="button">
+    <button
+      @click.prevent="$emit('handleClearStatistics')"
+      type="button"
+      class="modal__btn">
       Yes
     </button>
-    <button @click.prevent="$emit('handleClearStatisticsToggle')" type="button">
+    <button
+      @click.prevent="$emit('handleClearStatisticsToggle')"
+      type="button"
+      class="modal__btn modal__btn--secondary">
       No
     </button>
   </section>
