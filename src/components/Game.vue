@@ -7,6 +7,7 @@ import NameEntry from "./NameEntry.vue";
 import Scoreboard from "./Scoreboard.vue";
 import GameField from "./GameField.vue";
 import Navigation from "./Navigation.vue";
+import Modal from "./Modal.vue";
 import ClearStatistics from "./ClearStatistics.vue";
 
 const state = ref<IState>({
@@ -223,24 +224,12 @@ const clearModal = () => {
 </script>
 
 <template>
-  <div class="modal" v-if="navigationState.showModal">
-    <button @click.prevent="clearModal">X</button>
-    <NameEntry
-      v-if="navigationState.showNameInput"
-      :players="state.players"
-      @name-change="playerNameChange" />
-    <Scoreboard
-      v-if="navigationState.showScoreboard"
-      :players="state.players" />
-    <ClearStatistics
-      v-if="navigationState.showClearStatistics"
-      @handle-clear-statistics-toggle="
-        () => {
-          navigationState.showClearStatistics = false;
-        }
-      "
-      @handle-clear-statistics="clearStatistics" />
-  </div>
+  <Modal
+    :navigation-state="navigationState"
+    :players="state.players"
+    @clear-modal="clearModal"
+    @clear-statistics="clearStatistics"
+    @player-name-change="playerNameChange" />
   <article class="gamecontainer">
     <section v-if="navigationState.showGameResult">
       {{ messagesState.resultMessage }}

@@ -6,7 +6,7 @@ defineEmits<{
 </script>
 
 <template>
-  <section class="modal__inner-container">
+  <section>
     <p>
       Are you sure you want to clear the statistics? This will start a new
       round.
