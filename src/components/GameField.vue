@@ -47,7 +47,7 @@ const atMouseLeave = (e: Event) => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: clamp(400px, 400px, 100vw);
+  width: min(95vw, 400px);
   aspect-ratio: 1/1;
   border-left: var(--border);
   border-top: var(--border);

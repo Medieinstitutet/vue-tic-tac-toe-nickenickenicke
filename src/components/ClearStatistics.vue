@@ -8,7 +8,7 @@ defineEmits<{
 <template>
   <h3 class="modal__heading">Clear Statistics</h3>
 
-  <section class="modal__content modal__content--scoreboard">
+  <section class="modal__content modal__content--clearstatistics">
     <p class="modal__p">
       Are you sure you want to clear the statistics? This will reset everything
       and start a new round.
