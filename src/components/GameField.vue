@@ -44,13 +44,23 @@ const atMouseLeave = (e: Event) => {
 
 <style scoped>
 .gamefield {
-  display: flex;
-  flex-wrap: wrap;
-  width: 310px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: clamp(400px, 400px, 100vw);
+  aspect-ratio: 1/1;
+  border-left: var(--border);
+  border-top: var(--border);
 }
 
 .gamefield__btn {
   min-height: 3rem;
-  width: 100px;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  border: none;
+  border-right: var(--border);
+  border-bottom: var(--border);
+  font-size: 3rem;
+  font-weight: 800;
 }
 </style>

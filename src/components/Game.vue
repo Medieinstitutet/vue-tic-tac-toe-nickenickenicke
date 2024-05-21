@@ -25,12 +25,14 @@ const navigationState = ref<{
   showClearStatistics: boolean;
   showGameResult: boolean;
   showCurrentPlayer: boolean;
+  showModal: boolean;
 }>({
   showNameInput: false,
   showScoreboard: false,
   showClearStatistics: false,
   showGameResult: false,
   showCurrentPlayer: true,
+  showModal: false,
 });
 
 const messagesState = ref<{
@@ -194,24 +196,38 @@ const clearStatistics = () => {
 </script>
 
 <template>
-  <NameEntry
-    v-if="navigationState.showNameInput"
-    :players="state.players"
-    @name-change="playerNameChange" />
-  <Scoreboard v-if="navigationState.showScoreboard" :players="state.players" />
-  <section v-if="navigationState.showGameResult">
-    {{ messagesState.resultMessage }}
-  </section>
-  <section v-if="navigationState.showCurrentPlayer">
-    {{ messagesState.currentPlayerMessage }}
-  </section>
-  <GameField
-    :game-state="state.game"
-    @field-click="
-      (i) => {
-        fieldClick(i);
-      }
-    " />
+  <div class="modal">
+    <NameEntry
+      v-if="navigationState.showNameInput"
+      :players="state.players"
+      @name-change="playerNameChange" />
+    <Scoreboard
+      v-if="navigationState.showScoreboard"
+      :players="state.players" />
+    <ClearStatistics
+      v-if="navigationState.showClearStatistics"
+      @handle-clear-statistics-toggle="
+        () => {
+          navigationState.showClearStatistics = false;
+        }
+      "
+      @handle-clear-statistics="clearStatistics" />
+  </div>
+  <article class="gamecontainer">
+    <section v-if="navigationState.showGameResult">
+      {{ messagesState.resultMessage }}
+    </section>
+    <section v-if="navigationState.showCurrentPlayer">
+      {{ messagesState.currentPlayerMessage }}
+    </section>
+    <GameField
+      :game-state="state.game"
+      @field-click="
+        (i) => {
+          fieldClick(i);
+        }
+      " />
+  </article>
   <Navigation
     :game-state="state.game.isRunning"
     @handle-new-game="startNewRound"
@@ -231,14 +247,13 @@ const clearStatistics = () => {
         navigationState.showScoreboard = !navigationState.showScoreboard;
       }
     " />
-  <ClearStatistics
-    v-if="navigationState.showClearStatistics"
-    @handle-clear-statistics-toggle="
-      () => {
-        navigationState.showClearStatistics = false;
-      }
-    "
-    @handle-clear-statistics="clearStatistics" />
 </template>
 
-<style scoped></style>
+<style scoped>
+.gamecontainer {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
