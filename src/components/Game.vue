@@ -20,19 +20,19 @@ const state = ref<IState>({
 });
 
 const navigationState = ref<{
+  showModal: boolean;
   showNameInput: boolean;
   showScoreboard: boolean;
   showClearStatistics: boolean;
   showGameResult: boolean;
   showCurrentPlayer: boolean;
-  showModal: boolean;
 }>({
+  showModal: false,
   showNameInput: false,
   showScoreboard: false,
   showClearStatistics: false,
   showGameResult: false,
   showCurrentPlayer: true,
-  showModal: false,
 });
 
 const messagesState = ref<{
@@ -53,7 +53,7 @@ onMounted(() => {
   }
 
   if (!localStorage.getItem(LOCAL_STORAGE_KEY)) {
-    navigationState.value.showNameInput = true;
+    toggleNameInput();
     startNewRound();
   }
 });
@@ -193,10 +193,38 @@ const clearStatistics = () => {
   navigationState.value.showNameInput = true;
   startNewRound();
 };
+
+const toggleModal = () => {
+  navigationState.value.showModal = !navigationState.value.showModal;
+};
+
+const toggleScoreboard = () => {
+  toggleModal();
+  navigationState.value.showScoreboard = !navigationState.value.showScoreboard;
+};
+
+const toggleNameInput = () => {
+  toggleModal();
+  navigationState.value.showNameInput = !navigationState.value.showNameInput;
+};
+
+const toggleClearStatistics = () => {
+  toggleModal();
+  navigationState.value.showClearStatistics =
+    !navigationState.value.showClearStatistics;
+};
+
+const clearModal = () => {
+  navigationState.value.showModal = false;
+  navigationState.value.showScoreboard = false;
+  navigationState.value.showNameInput = false;
+  navigationState.value.showClearStatistics = false;
+};
 </script>
 
 <template>
-  <div class="modal">
+  <div class="modal" v-if="navigationState.showModal">
+    <button @click.prevent="clearModal">X</button>
     <NameEntry
       v-if="navigationState.showNameInput"
       :players="state.players"
@@ -233,18 +261,17 @@ const clearStatistics = () => {
     @handle-new-game="startNewRound"
     @handle-show-names="
       () => {
-        navigationState.showNameInput = !navigationState.showNameInput;
+        toggleNameInput();
       }
     "
     @handle-show-clear-statistics="
       () => {
-        navigationState.showClearStatistics =
-          !navigationState.showClearStatistics;
+        toggleClearStatistics();
       }
     "
     @handle-show-scoreboard="
       () => {
-        navigationState.showScoreboard = !navigationState.showScoreboard;
+        toggleScoreboard();
       }
     " />
 </template>
