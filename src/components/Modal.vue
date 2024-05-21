@@ -19,7 +19,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "clearModal"): void;
-  (e: "playerNameChange", name: string, i: number): void;
+  (e: "playerNameChange", names: string[]): void;
   (e: "clearStatistics"): void;
 }>();
 
@@ -47,8 +47,9 @@ const handleOuterModalClick = (e: Event) => {
         v-if="navigationState.showNameInput"
         :players="players"
         @name-change="
-          (name, i) => {
-            emit('playerNameChange', name, i);
+          (names) => {
+            emit('playerNameChange', names);
+            emit('clearModal');
           }
         " />
       <Scoreboard v-if="navigationState.showScoreboard" :players="players" />

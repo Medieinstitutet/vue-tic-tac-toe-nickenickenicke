@@ -63,8 +63,10 @@ const saveState = () => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.value));
 };
 
-const playerNameChange = (name: string, i: number) => {
-  state.value.players[i].name = name;
+const playerNameChange = (names: string[]) => {
+  state.value.players[0].name = names[0];
+  state.value.players[1].name = names[1];
+  if (state.value.game.isRunning) displayCurrentPlayer();
   saveState();
 };
 
