@@ -166,10 +166,14 @@ const displayResult = (winner: string) => {
   navigationState.value.showCurrentPlayer = false;
   if (winner === "X") {
     messagesState.value.resultMessage =
-      state.value.players[1].name + " X wins!";
+      state.value.players[1].name === ""
+        ? "X wins!"
+        : state.value.players[1].name + " wins!";
   } else if (winner === "O") {
     messagesState.value.resultMessage =
-      state.value.players[0].name + " O wins!";
+      state.value.players[0].name === ""
+        ? "O wins!"
+        : state.value.players[0].name + " wins!";
   } else {
     messagesState.value.resultMessage = "Draw!";
   }
