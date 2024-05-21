@@ -16,7 +16,7 @@ const handleNameChange = (name: string, i: number) => {
 </script>
 
 <template>
-  <section>
+  <section class="modal__inner-container">
     ANGE NAMN
     <NameInput
       v-for="(player, i) in players"

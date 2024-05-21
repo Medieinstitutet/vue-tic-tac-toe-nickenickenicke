@@ -6,7 +6,7 @@ defineEmits<{
 </script>
 
 <template>
-  <aside>
+  <section class="modal__inner-container">
     <p>
       Are you sure you want to clear the statistics? This will start a new
       round.
@@ -17,7 +17,7 @@ defineEmits<{
     <button @click.prevent="$emit('handleClearStatisticsToggle')" type="button">
       No
     </button>
-  </aside>
+  </section>
 </template>
 
 <style scoped></style>
